@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File to Hexadecimal Converter</title>
+</head>
+<body>
+    <h1>File to Hexadecimal Converter</h1>
+    
+    <input type="file" id="fileInput" accept=".txt, .jpg, .png, .pdf" />
+    <button id="convertToHex">Convert to Hexadecimal</button>
+    <button id="convertToOriginal">Convert to Original</button>
+    <br><br>
+    
+    <div>
+        <h2>Hexadecimal Representation:</h2>
+        <textarea id="hexOutput" rows="10" cols="50" readonly></textarea>
+    </div>
+    
+    <div>
+        <h2>Converted Original Content:</h2>
+        <div id="originalOutput"></div>
+    </div>
+
+    <script> //goVoU0x2.EefEoUjVzByzxaqEasksekVhLjIT8rU8
+    
+        document.getElementById('convertToHex').addEventListener('click', function() {
+            const fileInput = document.getElementById('fileInput');
+            const hexOutput = document.getElementById('hexOutput');
+            const file = fileInput.files[0];
+            const fileName = file.name;
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const arrayBuffer = e.target.result;
+                    const byteArray = new Uint8Array(arrayBuffer);
+                    const hexArray = Array.from(byteArray, byte => byte.toString(16).padStart(2, '0'));
+                    var hexString = hexArray.join('');
+                    hexString = fileName + "-BrokeChainCloud-" + hexString;
+                    hexOutput.value = hexString;
+                };
+
+                reader.readAsArrayBuffer(file);
+            } else {
+                alert('Please select a file first.');
+            }
+        });
+
+        document.getElementById('convertToOriginal').addEventListener('click', function() {
+            var hexOutput = document.getElementById('hexOutput').value;            
+            hexOutput_content = hexOutput.split('-BrokeChainCloud-')[1];
+            const originalOutput = document.getElementById('originalOutput');
+            
+            if (hexOutput) {
+                const hexArray = hexOutput_content.match(/.{1,2}/g);
+                const byteArray = new Uint8Array(hexArray.map(byteHex => parseInt(byteHex, 16)));
+                const blob = new Blob([byteArray]);
+
+                if (blob.type.startsWith('text/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        originalOutput.innerText = e.target.result;
+                    };
+                    reader.readAsText(blob);
+                } else {
+                    // Extract the original file name from the hexadecimal string
+                    const originalFileName = hexOutput.split('-BrokeChainCloud-')[0];
+                    
+                    // Create a download link with the original file name
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = originalFileName;
+
+                    originalOutput.innerHTML = '';
+                    originalOutput.appendChild(a);
+                    a.click(); // Trigger the click event to start the download
+                }
+            } else {
+                alert('Please convert the file to hexadecimal first.');
+            }
+        });
+    </script>
+</body>
+</html
