@@ -21,7 +21,7 @@ File Uploads
 
 Online Memory
 
-Online memory involves breaking down large chunks of files into hexadecimals for enhanced security. Watch the video featuring Hendricks discussing a decentralized piedpiper where files are stored securely in the cloud.
+Online memory involves breaking down large chunks of files into hexadecimals for enhanced security
 
 Resource Sharing
 
